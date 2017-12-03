@@ -32,9 +32,8 @@ for person, file in zip(people, files):
         try:
             words = text.split(" ")
             words = [convert(word) for word in words]
-            # sentence = " ".join(words)
-            # text = nltk.word_tokenize(sentence)
-            # NOTE: 'text' and 'words' are indeed the same
+            sentence = " ".join(words)
+            text = nltk.word_tokenize(sentence)
             tagged_text = nltk.pos_tag(words)
             for (word, POS) in tagged_text:
                 
