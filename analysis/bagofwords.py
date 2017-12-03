@@ -47,8 +47,9 @@ class BagOfWords:
             totalfreq = 0 # running total of frequencies
 
             # Get frequency and probability data for all words
+            # Do not use Laplace smoothing
             for row in data:
-                word, freq, prob = row[1], row[3], row[4]
+                word, freq, prob = row[1], row[0], row[2]
                 wordprob[word] = prob
                 totalfreq += freq
 
@@ -69,11 +70,9 @@ class BagOfWords:
             # If word exists, return the frequency
             if word in wordprob:
                 prob = wordprob[word]
-                print("Word exists!", prob)
             # Otherwise, assign a small probability under Ge-Zhou-Bostrom smoothing assumptions
             else:
                 prob = 1./sum(self.totalfreq_all)
-                print("Word doesn't exist!", prob)
             logprob_list[i] = log(prob)
         
         return logprob_list
