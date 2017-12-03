@@ -16,7 +16,8 @@ def convert(string):
     s = string
     first = s[0]
     if not first.isalnum():
-        s = s[1:]
+        if first != "#":
+            s = s[1:]
     last = s[len(s) - 1]
     if not last.isalnum():
         s = s[:(len(s) - 1)]
