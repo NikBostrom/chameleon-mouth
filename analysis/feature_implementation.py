@@ -10,8 +10,14 @@ f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.4}
 # bag_data = bag.get(["trump"])
 # print(bag_data)
 
+tweet = "crooked hilary lock her up"
+word_list = tweet.split(" ")
+
+bag = bagofwords.BagOfWords()
+f_bag = bag.get(word_list)
+
 weights = [0.3, 0.7]
-features = [f_1, f_2]
+features = [f_bag, f_1, f_2]
 
 f_w = zip(features, weights)
 
