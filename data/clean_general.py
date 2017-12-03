@@ -6,7 +6,6 @@ Created on Sun Dec 3 10:30:32 2017
 @author: jasonge
 """
 
-
 import pandas as pd
 import os
 import nltk
