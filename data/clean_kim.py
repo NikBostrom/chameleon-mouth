@@ -12,7 +12,7 @@ import nltk
 
 person = "kim"
 
-data = pd.read_csv('KimKardashian.csv')
+data = pd.read_csv('KimKardashianTweets.csv')
 
 dict_item = dict()
 
