@@ -47,8 +47,9 @@ class BagOfWords:
             totalfreq = 0 # running total of frequencies
 
             # Get frequency and probability data for all words
+            # Do not use Laplace smoothing
             for row in data:
-                word, freq, prob = row[1], row[3], row[4]
+                word, freq, prob = row[1], row[0], row[2]
                 wordprob[word] = prob
                 totalfreq += freq
 
