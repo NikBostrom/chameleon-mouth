@@ -8,6 +8,7 @@ Created on Sat Dec  2 19:53:29 2017
 
 import pandas as pd
 import csv
+import nltk
 
 data = pd.read_csv("trump_tweets_new.csv")
 
@@ -31,3 +32,8 @@ dictionary = pd.DataFrame({"word": list(trump_dict.keys()), "freq": list(trump_d
 dictionary = dictionary.sort(columns=["freq"], ascending= False)
 dictionary["probability"] = dictionary["freq"] / sum(dictionary["freq"])
 dictionary.to_csv("trump_dictionary.csv", index = False)
+
+
+
+
+#text = nltk.tokenize.word_tokenize("I went to the beach")
