@@ -139,6 +139,6 @@ class BagOfWords:
         self.populate()
         return self.parsetweet(tweet)
 
-a = BagOfWords()
-b = a.get(['trump'])
-print(b)
+# a = BagOfWords()
+# b = a.get(['trump'])
+# print(b)
