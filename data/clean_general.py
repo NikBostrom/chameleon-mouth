@@ -12,6 +12,7 @@ import os
 import nltk
 
 #nltk.download('punkt')
+#nltk.download('averaged_perceptron_tagger')
 
 def convert(string):
     if len(string) < 3:
