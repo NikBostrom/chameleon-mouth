@@ -14,8 +14,14 @@ trump_dict = dict()
 
 for index, row in data.iterrows():
     text = row["text"]
-    words = text.split(" ")
-    for word in words:
-        w = word.lower()
-        
+    try:
+        words = text.split(" ")
+        for word in words:
+            w = word.lower()
+            if w not in trump_dict.keys():
+                trump_dict[w] = 1
+            else:
+                trump_dict[w] += 1
+    except:
+        print(text)
         
