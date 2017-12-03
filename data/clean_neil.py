@@ -24,7 +24,7 @@ def convert(string):
 
 person = "neil"
 
-data = pd.read_csv('NeildeGrasseTysonTweets.csv')
+data = pd.read_csv('neil_tweets.csv')
 
 dict_item = dict()
 

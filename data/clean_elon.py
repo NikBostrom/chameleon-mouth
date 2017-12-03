@@ -27,7 +27,7 @@ def adjust(row):
     text = row["raw"]
     return text[2:]
 
-data = pd.read_csv('elonmusk_tweets.csv')
+data = pd.read_csv('elon_tweets.csv')
 
 data["text"] = data.apply(lambda row: adjust(row), axis = 1)
 

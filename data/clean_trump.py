@@ -23,7 +23,7 @@ def convert(string):
         s = s[:(len(s) - 1)]
     return s
 
-data = pd.read_csv("trump_tweets_new.csv")
+data = pd.read_csv("trump_tweets.csv")
 
 trump_dict = dict()
 
