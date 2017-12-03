@@ -29,4 +29,4 @@ for index, row in data.iterrows():
 
 dictionary = pd.DataFrame({"word": list(trump_dict.keys()), "freq": list(trump_dict.values())})
 dictionary.sort(columns=["freq"], ascending= False)
-dictionary.to_csv("trump_dictionary.csv")
+dictionary.to_csv("trump_dictionary.csv", index = False)
