@@ -2,6 +2,13 @@ Notes to Include in Report
 
 ----------
 
+How to Run
+
+1. In the clean_general.py file, uncomment the four lines of libraries to install before running
+2. Make sure to use Python 3.6
+
+----------
+
 Assumptions
 1. We aren't accounting for words that can act as different parts of speech, such as book (noun) vs book (verb), differently, so "book" would just inserted into the trump_dict based on its existence in the dictionary we already have (with whatever part of speech is selected first)
 2. Words are compared case-insensitively (we cast all words to lower-case)
