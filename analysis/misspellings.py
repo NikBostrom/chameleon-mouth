@@ -10,6 +10,10 @@ filepath = "../data/dictionaries/"
 files = os.listdir(filepath)
 files = [file for file in files if file.split(".")[1] == "csv"]
 people = list(map(lambda x: x.split("_")[0], files))
+
+all_tweets = pd.read_csv("aggregate_tweets/all_tweets.csv")
+
+
 print(people)
 tweets = []
 
