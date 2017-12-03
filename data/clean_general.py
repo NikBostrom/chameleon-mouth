@@ -10,24 +10,12 @@ Created on Sun Dec 3 10:30:32 2017
 import pandas as pd
 import os
 import nltk
+from util import convert
 
 #nltk.download('punkt')
 #nltk.download('averaged_perceptron_tagger')
 #nltk.download("tagsets")
 #nltk.help.upenn_tagset()
-
-def convert(string):
-    if len(string) < 3:
-        return string.lower()
-    s = string
-    first = s[0]
-    if not first.isalnum():
-        if first != "#":
-            s = s[1:]
-    last = s[len(s) - 1]
-    if not last.isalnum():
-        s = s[:(len(s) - 1)]
-    return s.lower()
 
 files = os.listdir("raw_tweets")
 people = list(map(lambda x: x.split("_")[0], files))
