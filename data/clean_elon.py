@@ -48,7 +48,7 @@ for index, row in data.iterrows():
         
 
 dictionary = pd.DataFrame({"word": list(elon_dict.keys()), "freq": list(elon_dict.values())})
-dictionary = dictionary.sort(columns=["freq"], ascending= False)
+dictionary = dictionary.sort_values(by=["freq"], ascending= False)
 dictionary["probability"] = dictionary["freq"] / sum(dictionary["freq"])
 dictionary["freq_iterated"] = dictionary["freq"] + 1
 dictionary["probability_iterated"] = dictionary["freq_iterated"] / sum(dictionary["freq_iterated"])
