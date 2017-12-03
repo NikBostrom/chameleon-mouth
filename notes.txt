@@ -1,5 +1,13 @@
 Notes to Include in Report
 
+----------
+
 Assumptions
 1. We aren't accounting for words that can act as different parts of speech, such as book (noun) vs book (verb), differently, so "book" would just inserted into the trump_dict based on its existence in the dictionary we already have (with whatever part of speech is selected first)
 2. Words are compared case-insensitively (we cast all words to lower-case)
+
+----------
+
+Features for Classification
+1. Bag-of-words: probability that a person says a given word given the previous word
+2. Average length of word
