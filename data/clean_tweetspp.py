@@ -17,16 +17,11 @@ for person, file in zip(people, files):
     
     data = pd.read_csv("raw_tweets/" + file)
     
-    dict_item = dict()
-    pos_dict = dict()
-    
     for index, row in data.iterrows():
         text = row["text"]
         try:
             words = text.split(" ")
             words = [convert(word) for word in words]
-            # sentence = " ".join(words)
-            # text = nltk.word_tokenize(sentence)
             tagged_text = nltk.pos_tag(words)
             for (word, POS) in tagged_text:
                 
