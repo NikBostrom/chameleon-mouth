@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Sun Dec 3 10:30:32 2017
+Created on Sun Dec  3 10:30:32 2017
 
 @author: jasonge
 """
@@ -11,10 +11,10 @@ import os
 import nltk
 from util import convert
 
-# nltk.download('punkt')
-# nltk.download('averaged_perceptron_tagger')
-# nltk.download("tagsets")
-# nltk.help.upenn_tagset()
+#nltk.download('punkt')
+#nltk.download('averaged_perceptron_tagger')
+#nltk.download("tagsets")
+#nltk.help.upenn_tagset()
 
 files = os.listdir("raw_tweets")
 people = list(map(lambda x: x.split("_")[0], files))
@@ -33,7 +33,7 @@ for person, file in zip(people, files):
             words = [convert(word) for word in words]
             sentence = " ".join(words)
             text = nltk.word_tokenize(sentence)
-            tagged_text = nltk.pos_tag(words)
+            tagged_text = nltk.pos_tag(text)
             for (word, POS) in tagged_text:
                 
                 if word not in dict_item.keys():
