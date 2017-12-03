@@ -62,6 +62,7 @@ for person, file in zip(people, files):
             
     
     dictionary = pd.DataFrame({"word": list(dict_item.keys()), "freq": list(dict_item.values())})
+    dictionary = dictionary[["word", "freq"]]
     dictionary = dictionary.sort_values(by=["freq"], ascending= False)
     dictionary["probability"] = dictionary["freq"] / sum(dictionary["freq"])
     dictionary["freq_iterated"] = dictionary["freq"] + 1
