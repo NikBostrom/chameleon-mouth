@@ -8,14 +8,41 @@ from math import log
 
 class BagOfWords:
 
-    def __init__(self, directory="../data/dictionaries", extension="_dictionary.csv"):
+    def __init__(self, dataset=0, directory=None, extension=None):
         '''
-        This naive Bayes is so naive, it doesn't know shit yet ...
+        This naive Bayes is so naive, it doesn't know anything yet ...
+
+        dataset: int
+            A switch integer to determine what dataset we are using
+            0 = dictionary (frequency of words)
+            1 = parts of speech
+
+        directory: string
+            NOTE: Not needed if dataset has been specified.
+            The file directory of the folder in which the data can be found.
+            Omit the final backslash.
+
+        extension: string
+            NOTE: Not needed if dataset has been specified.
+            The rest of the data file filenames; anything that comes after
+            the person's name.
+            Caution: this is not the same as the file extension, i.e. NOT ".csv"
         '''
+        # What dataset are we using?
+        if directory != None and extension != None:
+            self.directory = directory
+            self.extension = extension
+        elif dataset == 0:
+            self.directory = "../data/dictionaries"
+            self.extension = "_dictionary.csv"
+        elif dataset == 1:
+            self.directory = "../data/partsofspeech"
+            self.extension = "_POS.csv"
+        else:
+            raise ValueError("Invalid dataset inputted")
+        
         # Returns a list of pathnames that satisfy the input string, with "*" as a wildcard
-        self.directory = directory
-        self.extension = extension
-        self.filenames = glob.glob(directory+"/*"+extension)
+        self.filenames = glob.glob(self.directory+"/*"+self.extension)
 
         # Storage for all people
         self.names_all = []
@@ -25,7 +52,7 @@ class BagOfWords:
 
     def populate(self):
         '''
-        Fill ALL the storage! (Now it knows shit.)
+        Fill ALL the storage! (Now it knows things.)
         '''
         for filename in self.filenames:
             
@@ -112,7 +139,6 @@ class BagOfWords:
         self.populate()
         return self.parsetweet(tweet)
 
-class BagOfWordsPOS(BagOfWords):
-
-    def __init__(self, directory="../data/partsofspeech", extension="_POS.csv"):
-        super(BagOfWordsPOS, self).__init__(directory, extension)
+a = BagOfWords()
+b = a.get(['trump'])
+print(b)
