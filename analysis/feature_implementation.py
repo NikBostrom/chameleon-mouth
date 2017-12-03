@@ -3,25 +3,25 @@
 import pandas as pd
 import bagofwords
 
-f_1 = {"obama": 0.1, "trump": 0.3, "neil": 0.5, "kim": 0.1}
-f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.4}
+f_1 = {"obama": 0.1, "trump": 0.3, "neil": 0.5, "kim": 0.05, "elon": 0.05}
+f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
 
 # bag = bagofwords.BagOfWords()
 # bag_data = bag.get(["trump"])
 # print(bag_data)
 
-tweet = "crooked hilary lock her up"
+tweet = "STEM education needs to be funded"
 word_list = tweet.split(" ")
 
 bag = bagofwords.BagOfWords()
 f_bag = bag.get(word_list)
 
-weights = [0.3, 0.7]
+weights = [1.0, 0.0, 0.0]
 features = [f_bag, f_1, f_2]
 
 f_w = zip(features, weights)
 
-people = f_1.keys()
+people = f_bag.keys()
 
 final = dict()
 
