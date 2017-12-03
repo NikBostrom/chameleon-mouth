@@ -10,7 +10,7 @@ import pandas as pd
 
 data = pd.read_csv("trump_tweets_new.csv")
 
-trump_dict = dict{}
+trump_dict = dict()
 
 for index, row in data.iterrows():
     text = row["text"]
