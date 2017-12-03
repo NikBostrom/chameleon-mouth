@@ -8,12 +8,14 @@ from math import log
 
 class BagOfWords:
 
-    def __init__(self):
+    def __init__(self, directory="../data/dictionaries", extension="_dictionary.csv"):
         '''
         This naive Bayes is so naive, it doesn't know shit yet ...
         '''
         # Returns a list of pathnames that satisfy the input string, with "*" as a wildcard
-        self.filenames = glob.glob("../data/dictionaries/*_dictionary.csv")
+        self.directory = directory
+        self.extension = extension
+        self.filenames = glob.glob(directory+"/*"+extension)
 
         # Storage for all people
         self.names_all = []
@@ -30,7 +32,7 @@ class BagOfWords:
             # Extract the names of the people we are dealing with, from their dictionary.csv filenames  
             # e.g. >>> names_all
             #      ['trump', 'elon']
-            m = re.search("../data/dictionaries/(.*)_dictionary.csv", filename)
+            m = re.search(self.directory+"/(.*)"+self.extension, filename)
             if m:
                 name = m.group(1)
                 self.names_all.append(name)
@@ -49,7 +51,7 @@ class BagOfWords:
             # Get frequency and probability data for all words
             # Do not use Laplace smoothing
             for row in data:
-                word, freq, prob = row[1], row[0], row[2]
+                word, freq, prob = row[0], row[1], row[2]
                 wordprob[word] = prob
                 totalfreq += freq
 
@@ -106,6 +108,11 @@ class BagOfWords:
 
         return probsums_norm
 
-    def run(self, tweet):
+    def get(self, tweet):
         self.populate()
         return self.parsetweet(tweet)
+
+class BagOfWordsPOS(BagOfWords):
+
+    def __init__(self, directory="../data/partsofspeech", extension="_POS.csv"):
+        super(BagOfWordsPOS, self).__init__(directory, extension)
