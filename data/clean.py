@@ -7,6 +7,7 @@ Created on Sat Dec  2 19:53:29 2017
 """
 
 import pandas as pd
+import csv
 
 data = pd.read_csv("trump_tweets_new.csv")
 
@@ -25,3 +26,7 @@ for index, row in data.iterrows():
     except:
         print(text)
         
+
+dictionary = pd.DataFrame({"word": list(trump_dict.keys()), "freq": list(trump_dict.values())})
+dictionary.sort(columns=["freq"], ascending= False)
+dictionary.to_csv("trump_dictionary.csv", index = False)
