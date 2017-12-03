@@ -13,7 +13,6 @@ import nltk
 files = os.listdir("raw_tweets")
 people = list(map(lambda x: x.split("_")[0], files))
 
-counter1 = 0
 for person, file in zip(people, files):
     
     data = pd.read_csv("raw_tweets/" + file)
@@ -26,17 +25,9 @@ for person, file in zip(people, files):
         try:
             words = text.split(" ")
             words = [convert(word) for word in words]
-            sentence = " ".join(words)
-            text = nltk.word_tokenize(sentence)
-            tagged_text = nltk.pos_tag(text)
-            if counter1 < 4:
-            	pass
-            	# print("words", words)
-            	# print("sentence", sentence)
-            	# print("text", text)
-            	# print("tagged_text", tagged_text)
-            counter1 +=1
-            print(counter)
+            # sentence = " ".join(words)
+            # text = nltk.word_tokenize(sentence)
+            tagged_text = nltk.pos_tag(words)
             for (word, POS) in tagged_text:
                 
                 if word not in dict_item.keys():

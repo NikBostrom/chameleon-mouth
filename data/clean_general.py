@@ -32,9 +32,10 @@ for person, file in zip(people, files):
         try:
             words = text.split(" ")
             words = [convert(word) for word in words]
-            sentence = " ".join(words)
-            text = nltk.word_tokenize(sentence)
-            tagged_text = nltk.pos_tag(text)
+            # sentence = " ".join(words)
+            # text = nltk.word_tokenize(sentence)
+            # NOTE: 'text' and 'words' are indeed the same
+            tagged_text = nltk.pos_tag(words)
             for (word, POS) in tagged_text:
                 
                 if word not in dict_item.keys():
