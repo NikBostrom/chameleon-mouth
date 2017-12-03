@@ -29,4 +29,5 @@ for index, row in data.iterrows():
 
 dictionary = pd.DataFrame({"word": list(trump_dict.keys()), "freq": list(trump_dict.values())})
 dictionary = dictionary.sort(columns=["freq"], ascending= False)
+dictionary["probability"] = dictionary["freq"] / sum(dictionary["freq"])
 dictionary.to_csv("trump_dictionary.csv", index = False)
