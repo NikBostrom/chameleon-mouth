@@ -2,7 +2,8 @@
 
 import util
 
-# class k_Nearest:
-#     def __init__(self):
+class k_Nearest:
+    def __init__(self):
+    	
 
 print(convert("test"))
