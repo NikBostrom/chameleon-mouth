@@ -2,6 +2,7 @@
 
 import pandas as pd
 import bagofwords
+from misspellings_functions import misspelled_distributions
 
 f_1 = {"obama": 0.1, "trump": 0.3, "neil": 0.5, "kim": 0.05, "elon": 0.05}
 f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
@@ -15,9 +16,10 @@ word_list = tweet.split(" ")
 
 bag = bagofwords.BagOfWords()
 f_bag = bag.get(word_list)
+f_misspelled = misspelled_distributions(tweet)
 
-weights = [1.0, 0.0, 0.0]
-features = [f_bag, f_1, f_2]
+weights = [0.0, 1.0]
+features = [f_bag, f_misspelled]
 
 f_w = zip(features, weights)
 
