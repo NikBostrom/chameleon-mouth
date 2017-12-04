@@ -16,7 +16,8 @@ f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
 # print("Bag data:", bag_data)
 
 aves = averages.Precalcd_Ave()
-ave_hashtags = aves.ave_num_words_per_tweet
+ave_hashtags = aves.ave_num_hashtags
+ave_w_p_tweet = aves.ave_num_words_per_tweet
 mean_word_lengths = aves.ave_of_ave_word_lengths_per_tweet
 std_word_lengths = aves.stdev_ave_word_len_per_tweet
 
