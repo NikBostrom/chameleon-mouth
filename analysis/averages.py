@@ -114,7 +114,7 @@ class Average:
 
             self.ave_num_words_per_tweet[person] = total_words / num_tweets
 
-            self.ave_of_ave_word_lengths_per_tweet = np.mean(ave_word_lengths_per_tweet)
+            self.ave_of_ave_word_lengths_per_tweet[person] = np.mean(ave_word_lengths_per_tweet)
 
             self.stdev_ave_word_len_per_tweet[person] = np.std(ave_word_lengths_per_tweet)
 
@@ -149,6 +149,29 @@ class Average:
 a = Average()
 a.ave_nwords_per_tweet()
 a.ave_word_length()
+
+people = a.ave_word_lengths.keys()
+
+ave_hashtags = []
+ave_ave_word_lengths_pt = []
+std_ave_wlpt = []
+ave_nwords_per_tweet = []
+
+for p in people:
+    ave_h = a.ave_num_hashtags[p]
+    av_av_wd_len_pt = a.ave_of_ave_word_lengths_per_tweet[p]
+    std_ave_w_l = a.stdev_ave_word_len_per_tweet[p]
+    ave_wpt = a.ave_num_words_per_tweet[p]
+
+    ave_hashtags.append(ave_h)
+    ave_ave_word_lengths_pt.append(av_av_wd_len_pt)
+    std_ave_wlpt.append(std_ave_w_l)
+    ave_nwords_per_tweet.append(ave_wpt)
+
+averages = pd.DataFrame(data = [people, ave_hashtags, ave_ave_word_lengths_pt, std_ave_wlpt, ave_nwords_per_tweet]).transpose()
+averages.columns = ["person", "ave hashtags", "mean wlength per tweet", "std of mean wlength per tweet", "ave num words per tweet"]
+averages.to_csv("average_data.csv", index=False)
+
 
 # print("StDevs", a.stdev_ave_word_len_per_tweet)
 # print("Average length of words used:", a.ave_word_lengths, "\n---------------")
