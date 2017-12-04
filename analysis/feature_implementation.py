@@ -14,22 +14,19 @@ f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
 # bag_data = bag.get(["trump"])
 # print("Bag data:", bag_data)
 
-tweet = "Report: “ANTI-TRUMP FBI AGENT LED CLINTON EMAIL PROBE”  Now it all starts to make sense!"
-aves = averages.Precalcd_Ave()
-ave_hashtags = aves.ave_num_words_per_tweet
-mean_word_lengths = aves.ave_of_ave_word_lengths_per_tweet
-std_word_lengths = aves.stdev_ave_word_len_per_tweet
+tweet = "That special hat delivery will take place deep within the real, but fictional (of course), tunnel we are building under LA while you drive the giant machine blindfolded. This will actually happen."
 
-print(ave_hashtags, mean_word_lengths, std_word_lengths)
+aves = averages.Precalcd_Ave()
 
 word_list = tweet.split(" ")
 
 bag = bagofwords.BagOfWords()
 f_bag = bag.get(word_list)
 f_misspelled = misspelled_distributions(tweet)
+f_length = aves.probs(tweet)
 
-weights = [0.2, 0.2, 0.2, 0.2, 0.2]
-features = [f_bag, f_misspelled, ave_hashtags, mean_word_lengths, std_word_lengths]
+weights = [0.333,0.333,0.333]
+features = [f_bag, f_misspelled, f_length]
 
 f_w = zip(features, weights)
 
