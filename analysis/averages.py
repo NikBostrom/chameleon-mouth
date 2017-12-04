@@ -127,7 +127,7 @@ class Average:
 
             self.stdev_ave_word_len_per_tweet[person] = np.std(ave_word_lengths_per_tweet)
 
-    def prob_ave_wd_len(self, new_tweet):
+    def probs(self, new_tweet):
         '''
         ----------------------------------------------
         Given a new tweet, calculate the probability that each person said the given tween, based only on the average lenght of the words in the tweet and the average lengths of words used byy each person across all their tweets
@@ -140,7 +140,7 @@ class Average:
 
         lens_and_stds = {}
 
-        for person, ave_len in self.ave_word_lengths.items():
+        for person, ave_len in self.ave_of_ave_word_lengths_per_tweet.items():
             lens_and_stds[person] = (ave_len, self.stdev_ave_word_len_per_tweet[person])
 
         probs = {}
