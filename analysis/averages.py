@@ -123,7 +123,7 @@ class Average:
         total_length = 0
         for w in new_tweet.split(" "):
             total_length += len(w)
-        new_tweet_ave_w_len = total_length / len(new_tweet.split(" "))
+        new_tweet_ave_wd_len = total_length / len(new_tweet.split(" "))
 
         lens_and_stds = {}
 
@@ -132,7 +132,7 @@ class Average:
 
         probs = {}
         for p, (ave_len, std) in lens_and_stds.items():
-            temp_prob = norm.cdf(new_tweet_ave_w_len, ave_len, std)
+            temp_prob = norm.cdf(new_tweet_ave_wd_len + 0.00000001, ave_len, std) - norm.cdf(new_tweet_ave_wd_len - 0.00000001, ave_len, std) 
             probs[p] = temp_prob
         
         probs_sum = 0
@@ -150,13 +150,16 @@ a = Average()
 a.ave_nwords_per_tweet()
 a.ave_word_length()
 
-print("StDevs", a.stdev_ave_word_len_per_tweet)
-print("Average length of words used:", a.ave_word_lengths)
-print("Average number of hashtags used:", a.ave_num_hashtags)
-print("Average number of words per tweet: ", a.ave_num_words_per_tweet)
+# print("StDevs", a.stdev_ave_word_len_per_tweet)
+print("Average length of words used:", a.ave_word_lengths, "\n---------------")
+# print("Average number of hashtags used:", a.ave_num_hashtags)
+# print("Average number of words per tweet: ", a.ave_num_words_per_tweet)
 
-new_tweet = "Seven77"
-print("\nProbability each person said ", new_tweet, ":", a.prob_ave_wd_len(new_tweet))
+new_tweet = "Eight888"
+print("Probability each person said ", new_tweet, ":", a.prob_ave_wd_len(new_tweet))
 
+new_tweet2 = "TwelveTwelve"
+print("\nProbability each person said ", new_tweet2, ":", a.prob_ave_wd_len(new_tweet2))
 
-
+new_tweet3 = "Fourteen141414"
+print("\nProbability each person said ", new_tweet3, ":", a.prob_ave_wd_len(new_tweet3))
