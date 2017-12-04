@@ -4,6 +4,7 @@
 import os
 import pandas as pd
 import numpy as np
+from scipy.stats import norm
 
 class Average:
     # Taken from BagOfWords
@@ -50,6 +51,7 @@ class Average:
         self.ave_num_words = {}
         self.ave_word_lengths = {}
         self.stdev_ave_word_len_per_tweet = {}
+        self.probs_given_new_tweet = {}
 
 
     def ave_word_length(self):
@@ -110,18 +112,41 @@ class Average:
 
             self.stdev_ave_word_len_per_tweet[person] = np.std(self.ave_word_lengths_per_tweet)
 
+    def prob_ave_w_len(self, new_tweet):
+        # Calculate the average word length of the new tweet
+        total_length = 0
+        for w in new_tweet.split(" "):
+            total_length += len(w)
+        new_tweet_ave_w_len = total_length / len(new_tweet.split(" "))
+
+        lens_and_stds = {}
+
+        for person, ave_len in self.ave_word_lengths.items():
+            lens_and_stds[person] = (ave_len, self.stdev_ave_word_len_per_tweet[person])
+
+        probs = {}
+        probs_sum = 0
+        for p, (ave_len, std) in lens_and_stds.items():
+            temp_prob = norm.cdf(new_tweet_ave_w_len, ave_len, std)
+            probs[p] = temp_prob
+            probs_sum += temp_prob
+
+        for person, prob in probs.items():
+            probs[person] /= probs_sum
+
+        return probs
 
 a = Average()
 a.ave_nwords_per_tweet()
 a.ave_word_length()
 
-print("StDevs", self.stdev_ave_word_len_per_tweet)
+print("StDevs", a.stdev_ave_word_len_per_tweet)
 print("Average length of words used:", a.ave_word_lengths)
 print("Average number of hashtags used:", a.ave_num_hashtags)
 print("Average number of words: ", a.ave_num_words)
 
+new_tweet = "\'yfitfkykyfkuf\'"
+print("Probability each person said ", new_tweet, ":", a.prob_ave_w_len(new_tweet))
 
-'''
-Now for of the above lists, treat the average values as means of Normal distributions for each person, calculate the probability of seeing the average value for the tweet in question based on said distribution(s), and normalize all such probabilities.
-'''
+
 
