@@ -78,6 +78,9 @@ class Average:
                 try:
                     nwords += 1
                     total_length += len(word)
+                    '''
+                    We already have a dictionary with all the words in it and hashtags have been stripped off of words, so the average number of hashtags used by a person is the total number of hashtags, given by row["freq"], diveded by the total number of words (see below when the number of words is greater than 0)
+                    '''
                     if word == "#":
                         nhashtags = row["freq"]
                 except:
@@ -161,6 +164,7 @@ class Average:
 ----------------------------------------------
 Code to create csv with average data. Commented out because once calculated, the data is stored in the csv file and need not be recalculated every time the code is run. If the data set(s) change(s), then this can be rerun once to calculate the appropriate values.
 ----------------------------------------------
+
 a = Average()
 
 a.ave_nwords_per_tweet()
@@ -189,21 +193,49 @@ averages = pd.DataFrame(data = [people, ave_hashtags, ave_ave_word_lengths_pt, s
 averages.columns = ["person", "ave hashtags", "mean wlength per tweet", "std of mean wlength per tweet", "ave num words per tweet"]
 averages.to_csv("average_data.csv", index=False)
 '''
+class Precalcd_Ave(Average):
+    def __init__(self, dataset=0, directory=None, extension=None):
+        average_data = pd.read_csv("average_data.csv")
+        self.people = list(average_data["person"])
 
+        self.ave_num_hashtags = list(average_data["ave hashtags"])
+
+        self.ave_num_words_per_tweet = list(average_data["ave num words per tweet"])
+
+        self.ave_of_ave_word_lengths_per_tweet = list(average_data["mean wlength per tweet"])
+        self.stdev_ave_word_len_per_tweet = list(average_data["std of mean wlength per tweet"])
 
 '''
 TESTING
+----------------------------------------------
+a = Precalcd_Ave()
+print(a.people)
+print(a.ave_num_hashtags)
+print(a.ave_num_words_per_tweet)
+print(a.ave_of_ave_word_lengths_per_tweet)
+print(a.stdev_ave_word_len_per_tweet)
+
+
+----------------------------------------------
+average_data = pd.read_csv("average_data.csv")
+
+people = list(average_data["person"])
+print(people)
+
+
+for i, row in average_data.iterrows():
+
+    print("StDevs", a.stdev_ave_word_len_per_tweet)
+    print("Average length of words used:", a.ave_word_lengths, "\n---------------")
+    print("Average number of hashtags used:", a.ave_num_hashtags)
+    print("Average number of words per tweet: ", a.ave_num_words_per_tweet)
+
+    new_tweet = "Eight888"
+    print("Probability each person said ", new_tweet, ":", a.prob_ave_wd_len(new_tweet))
+
+    new_tweet2 = "TwelveTwelve"
+    print("\nProbability each person said ", new_tweet2, ":", a.prob_ave_wd_len(new_tweet2))
+
+    new_tweet3 = "Fourteen141414"
+    print("\nProbability each person said ", new_tweet3, ":", a.prob_ave_wd_len(new_tweet3))
 '''
-# print("StDevs", a.stdev_ave_word_len_per_tweet)
-# print("Average length of words used:", a.ave_word_lengths, "\n---------------")
-# print("Average number of hashtags used:", a.ave_num_hashtags)
-# print("Average number of words per tweet: ", a.ave_num_words_per_tweet)
-
-# new_tweet = "Eight888"
-# print("Probability each person said ", new_tweet, ":", a.prob_ave_wd_len(new_tweet))
-
-# new_tweet2 = "TwelveTwelve"
-# print("\nProbability each person said ", new_tweet2, ":", a.prob_ave_wd_len(new_tweet2))
-
-# new_tweet3 = "Fourteen141414"
-# print("\nProbability each person said ", new_tweet3, ":", a.prob_ave_wd_len(new_tweet3))
