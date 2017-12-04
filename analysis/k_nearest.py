@@ -16,7 +16,10 @@ class k_Nearest:
     			occurrences += tweet.count(word)
     		occurrences_all[i] = occurrences
     	
-    	return occurrences_all
+    	# Scale the values so that the maximum value is 1
+    	occurrences_all_norm = [x/max(occurrences_all) for x in occurrences_all]
+
+    	return occurrences_all_norm
 
     def word_similarity(self, tweet_words_new):
     	return similarity(tweet_words_new, self.tweets_all.values())
@@ -24,6 +27,17 @@ class k_Nearest:
     def POS_similarity(self, tweet_POSs_new):
     	return similarity(tweet_POSs_new, self.tweets_POSs_all.values())
 
+    def otherfeatures(self, tweet_words_new):
+    	
+    	lenoftweet_similarity = np.zeros(len(self.tweets_all.values()))
+    	for i, tweet in enumerate(self.tweets_all.values()):
+    		for word in tweet_words_new:
+
+    # len of tweet
+    # avg len of word
+    # number of hashtags
+    # number of links
+    # number of @mentions
     def compare(self, tweet_new):
     	for 
 

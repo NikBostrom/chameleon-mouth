@@ -70,7 +70,7 @@ class BagOfWords:
             #   increment of 1
             # e.g. >>> data[0]
             #      [1230, 'the', 0.050, 1231, 0.049]
-            data = pd.read_csv(filename).as_matrix()
+            data = pd.read_csv(filename, error_bad_lines=False, encoding='latin1').as_matrix()
 
             wordprob = {} # (key: word), (value: probability)
             totalfreq = 0 # running total of frequencies

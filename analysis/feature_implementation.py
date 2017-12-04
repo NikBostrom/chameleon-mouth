@@ -9,7 +9,9 @@ f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
 
 # bag = bagofwords.BagOfWords()
 # bag_data = bag.get(["trump"])
-# print(bag_data)
+# print("Bag data:", bag_data)
+
+
 
 tweet = "STEM education needs to be funded"
 word_list = tweet.split(" ")

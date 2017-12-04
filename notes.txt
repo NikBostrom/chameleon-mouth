@@ -16,5 +16,5 @@ Assumptions
 ----------
 
 Features for Classification
-1. Bag-of-words: probability that a person says a given word given the previous word
+1. Bag-of-words: naive muliplicain f prbabiliies ha a persn sas a wrd based n he frequenies ver all weets in he crpus for said persno
 2. Average length of word
