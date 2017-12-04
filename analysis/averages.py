@@ -47,10 +47,14 @@ class Average:
 
         self.people = list(map(lambda x: x.split("_")[0], self.dict_files))
 
-        self.ave_num_hashtags = {}
-        self.ave_num_words = {}
         self.ave_word_lengths = {}
+        self.ave_num_hashtags = {}
+
+        self.ave_num_words_per_tweet = {}
+
+        self.ave_of_ave_word_lengths_per_tweet = {}
         self.stdev_ave_word_len_per_tweet = {}
+
         self.probs_given_new_tweet = {}
 
 
@@ -84,14 +88,14 @@ class Average:
 
     def ave_nwords_per_tweet(self):
         '''
-        Calculate average number of words per tweet and average length of word per tweet
+        Calculate average number of words per tweet and average length of word PER TWEET
         '''
         for person, file in zip(self.people, self.raw_tweet_files):
             
             data = pd.read_csv(self.raw_tweet_filepath + file, encoding='latin1')
             total_words = 0
             num_tweets = 0
-            self.ave_word_lengths_per_tweet = []
+            ave_word_lengths_per_tweet = []
 
             for _, row in data.iterrows():
                 tweet = row["text"]
@@ -104,15 +108,17 @@ class Average:
                     for w in split_tweet:
                         sum_w_lengths += len(w)
                     ave_wd_ln = sum_w_lengths / len(split_tweet)
-                    self.ave_word_lengths_per_tweet.append(ave_wd_ln)
+                    ave_word_lengths_per_tweet.append(ave_wd_ln)
                 except:
                     print(tweet)
 
-                self.ave_num_words[person] = total_words / num_tweets
+            self.ave_num_words_per_tweet[person] = total_words / num_tweets
 
-            self.stdev_ave_word_len_per_tweet[person] = np.std(self.ave_word_lengths_per_tweet)
+            self.ave_of_ave_word_lengths_per_tweet = np.mean(ave_word_lengths_per_tweet)
 
-    def prob_ave_w_len(self, new_tweet):
+            self.stdev_ave_word_len_per_tweet[person] = np.std(ave_word_lengths_per_tweet)
+
+    def prob_ave_wd_len(self, new_tweet):
         # Calculate the average word length of the new tweet
         total_length = 0
         for w in new_tweet.split(" "):
@@ -125,15 +131,19 @@ class Average:
             lens_and_stds[person] = (ave_len, self.stdev_ave_word_len_per_tweet[person])
 
         probs = {}
-        probs_sum = 0
         for p, (ave_len, std) in lens_and_stds.items():
             temp_prob = norm.cdf(new_tweet_ave_w_len, ave_len, std)
             probs[p] = temp_prob
-            probs_sum += temp_prob
+        
+        probs_sum = 0
+        for person, prob in probs.items():
+            probs_sum += prob
 
         for person, prob in probs.items():
-            probs[person] /= probs_sum
-
+            if probs_sum > 0:
+                probs[person] /= probs_sum
+            else:
+                probs[person] = 0
         return probs
 
 a = Average()
@@ -143,10 +153,10 @@ a.ave_word_length()
 print("StDevs", a.stdev_ave_word_len_per_tweet)
 print("Average length of words used:", a.ave_word_lengths)
 print("Average number of hashtags used:", a.ave_num_hashtags)
-print("Average number of words: ", a.ave_num_words)
+print("Average number of words per tweet: ", a.ave_num_words_per_tweet)
 
-new_tweet = "\'yfitfkykyfkuf\'"
-print("Probability each person said ", new_tweet, ":", a.prob_ave_w_len(new_tweet))
+new_tweet = "Seven77"
+print("\nProbability each person said ", new_tweet, ":", a.prob_ave_wd_len(new_tweet))
 
 
 
