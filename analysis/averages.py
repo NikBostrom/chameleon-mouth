@@ -64,7 +64,7 @@ class Average:
         '''
         for person, file in zip(self.people, self.dict_files):
             
-            data = pd.read_csv(self.dict_filepath + file, encoding='latin1')
+            data = pd.read_csv(self.dict_filepath + file, error_bad_lines=False, encoding='latin1')
             nwords = 0
             total_length = 0
             nhashtags = 0
@@ -92,7 +92,7 @@ class Average:
         '''
         for person, file in zip(self.people, self.raw_tweet_files):
             
-            data = pd.read_csv(self.raw_tweet_filepath + file, encoding='latin1')
+            data = pd.read_csv(self.raw_tweet_filepath + file, error_bad_lines=False, encoding='latin1')
             total_words = 0
             num_tweets = 0
             ave_word_lengths_per_tweet = []
@@ -151,15 +151,15 @@ a.ave_nwords_per_tweet()
 a.ave_word_length()
 
 # print("StDevs", a.stdev_ave_word_len_per_tweet)
-print("Average length of words used:", a.ave_word_lengths, "\n---------------")
+# print("Average length of words used:", a.ave_word_lengths, "\n---------------")
 # print("Average number of hashtags used:", a.ave_num_hashtags)
 # print("Average number of words per tweet: ", a.ave_num_words_per_tweet)
 
-new_tweet = "Eight888"
-print("Probability each person said ", new_tweet, ":", a.prob_ave_wd_len(new_tweet))
+# new_tweet = "Eight888"
+# print("Probability each person said ", new_tweet, ":", a.prob_ave_wd_len(new_tweet))
 
-new_tweet2 = "TwelveTwelve"
-print("\nProbability each person said ", new_tweet2, ":", a.prob_ave_wd_len(new_tweet2))
+# new_tweet2 = "TwelveTwelve"
+# print("\nProbability each person said ", new_tweet2, ":", a.prob_ave_wd_len(new_tweet2))
 
-new_tweet3 = "Fourteen141414"
-print("\nProbability each person said ", new_tweet3, ":", a.prob_ave_wd_len(new_tweet3))
+# new_tweet3 = "Fourteen141414"
+# print("\nProbability each person said ", new_tweet3, ":", a.prob_ave_wd_len(new_tweet3))

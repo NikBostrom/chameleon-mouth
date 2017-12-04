@@ -26,7 +26,7 @@ files = os.listdir(filepath)
 files = [file for file in files if file.split(".")[1] == "csv"]
 people = list(map(lambda x: x.split("_")[0], files))
 
-all_tweets = pd.read_csv("all_tweets.csv")
+all_tweets = pd.read_csv("all_tweets.csv", error_bad_lines=False)
 
 def split_tweet(tweet):
     words = str(tweet).split(" ")
