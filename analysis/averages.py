@@ -127,7 +127,7 @@ class Average:
 
             self.stdev_ave_word_len_per_tweet[person] = np.std(ave_word_lengths_per_tweet)
 
-    def prob_ave_wd_len(self, new_tweet):
+    def probs(self, new_tweet):
         '''
         ----------------------------------------------
         Given a new tweet, calculate the probability that each person said the given tween, based only on the average lenght of the words in the tweet and the average lengths of words used byy each person across all their tweets
@@ -140,7 +140,7 @@ class Average:
 
         lens_and_stds = {}
 
-        for person, ave_len in self.ave_word_lengths.items():
+        for person, ave_len in self.ave_of_ave_word_lengths_per_tweet.items():
             lens_and_stds[person] = (ave_len, self.stdev_ave_word_len_per_tweet[person])
 
         probs = {}
@@ -198,17 +198,31 @@ class Precalcd_Ave(Average):
         average_data = pd.read_csv("average_data.csv")
         self.people = list(average_data["person"])
 
-        self.ave_num_hashtags = list(average_data["ave hashtags"])
+        t_hshtgs = list(average_data["ave hashtags"])
+        t_nwords = list(average_data["ave num words per tweet"])
+        t_m_wlengths = list(average_data["mean wlength per tweet"])
+        t_std_wlengths = list(average_data["std of mean wlength per tweet"])
 
-        self.ave_num_words_per_tweet = list(average_data["ave num words per tweet"])
+        self.ave_num_hashtags = {}
+        self.ave_num_words_per_tweet = {}
+        self.ave_of_ave_word_lengths_per_tweet = {}
+        self.stdev_ave_word_len_per_tweet = {}
 
-        self.ave_of_ave_word_lengths_per_tweet = list(average_data["mean wlength per tweet"])
-        self.stdev_ave_word_len_per_tweet = list(average_data["std of mean wlength per tweet"])
+        i = 0
+        for p in self.people:
+            self.ave_num_hashtags[p] = t_hshtgs[i]
+            self.ave_num_words_per_tweet[p] = t_nwords[i]
+            self.ave_of_ave_word_lengths_per_tweet[p] = t_m_wlengths[i]
+            self.stdev_ave_word_len_per_tweet[p] = t_std_wlengths[i]
+            i += 1
+
 
 '''
 TESTING
 ----------------------------------------------
+
 a = Precalcd_Ave()
+
 print(a.people)
 print(a.ave_num_hashtags)
 print(a.ave_num_words_per_tweet)
