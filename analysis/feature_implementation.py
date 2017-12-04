@@ -11,16 +11,14 @@ f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
 # bag_data = bag.get(["trump"])
 # print("Bag data:", bag_data)
 
-
-
-tweet = "STEM education needs to be funded"
+tweet = "jaeglwja lawejglakwje hello how is it going"
 word_list = tweet.split(" ")
 
 bag = bagofwords.BagOfWords()
 f_bag = bag.get(word_list)
 f_misspelled = misspelled_distributions(tweet)
 
-weights = [0.0, 1.0]
+weights = [0.2, 0.8]
 features = [f_bag, f_misspelled]
 
 f_w = zip(features, weights)
