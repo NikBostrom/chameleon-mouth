@@ -2,6 +2,7 @@
 
 import pandas as pd
 import bagofwords
+import nltk
 
 import averages
 
@@ -16,12 +17,13 @@ f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
 
 aves = averages.Precalcd_Ave()
 bag = bagofwords.BagOfWords()
+pos = bagofwords.BagOfWords(dataset=1)
 
-test_set = pd.read_csv("../data/test_set.csv")
-test_set = test_set.sample(1000)
-test_set = test_set.reset_index()
+#test_set = pd.read_csv("../data/test_set.csv")
+#test_set = test_set.sample(500)
+#test_set = test_set.reset_index()
 
-weights = [0.333,0.333,0.333]
+weights = [0.333,0.333,0.333, 0.333]
 
 predictions = []
 
@@ -32,13 +34,17 @@ for index, row in test_set.iterrows():
         tweet = row["text"]
     
         word_list = tweet.split(" ")
+        
+        text = nltk.word_tokenize(tweet)
+        tagged_text = nltk.pos_tag(text)
+        pos_list = list(list(zip(*tagged_text))[1])
     
         f_bag = bag.get(word_list)
+        f_pos = pos.get(pos_list)
         f_misspelled = misspelled_distributions(tweet)
         f_length = aves.probs(tweet)
     
-    
-        features = [f_bag, f_misspelled, f_length]
+        features = [f_bag, f_pos, f_misspelled, f_length]
     
         f_w = zip(features, weights)
     
@@ -57,7 +63,8 @@ for index, row in test_set.iterrows():
     except:
         p = "error"
     predictions.append(p)
-    print("prediction: " + p + " actual: " + row["person"] + " progress: " + str(index/num_total))
+    if index%50 == 0:
+        print("prediction: " + p + " actual: " + row["person"] + " progress: " + str(index/num_total))
     
 test_set["prediction"] = predictions
 test_set["correct"] = test_set["prediction"] == test_set["person"]
@@ -65,38 +72,18 @@ test_set["correct"] = test_set["prediction"] == test_set["person"]
 correct = test_set[test_set["correct"] == True]
 num_correct = len(correct)
 test_set.to_csv("predictions.csv", index=False)
-print("Percent Correct" + (num_correct/num_total))
+print("Percent Correct" + str(num_correct/num_total))
 
-
-#def prediction(row):
-#
-#    tweet = row["text"]
-#
-#    word_list = tweet.split(" ")
-#
-#    f_bag = bag.get(word_list)
-#    f_misspelled = misspelled_distributions(tweet)
-#    f_length = aves.probs(tweet)
-#
-#
-#    features = [f_bag, f_misspelled, f_length]
-#
-#    f_w = zip(features, weights)
-#
-#    people = f_bag.keys()
-#
-#    final = dict()
-#
-#    for feature, weight in f_w:
-#        for person in people:
-#            if person not in final.keys():
-#                final[person] = feature[person] * weight
-#            else:
-#                final[person] += feature[person] * weight
-#
-#    return max(final, key=final.get)
-
-#test_set["prediction"] = data.apply(lambda row: prediction(row), axis = 1)
-
-
-
+for person in people:
+    temp = test_set[test_set["person"] == person]
+    num = len(temp)
+    correct = temp[temp["correct"] == True]
+    c = len(correct)
+    print("Person: " + person)
+    print("Tweets: " + str(num))
+    print("Number Correct: " + str(c))
+    print("Percentage Correct: " + str(c / num))
+    print()
+    
+    
+    
