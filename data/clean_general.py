@@ -10,18 +10,20 @@ import pandas as pd
 import os
 import nltk
 from util import convert
+import random
 
 #nltk.download('punkt')
 #nltk.download('averaged_perceptron_tagger')
 #nltk.download("tagsets")
 #nltk.help.upenn_tagset()
 
-files = os.listdir("raw_tweets")
-people = list(map(lambda x: x.split("_")[0], files))
+training_set = pd.read_csv("training_set.csv")
 
-for person, file in zip(people, files):
+people = list(set(training_set["person"]))
+
+for person in people:
     
-    data = pd.read_csv("raw_tweets/" + file)
+    data = training_set[training_set["person"] == person]
     
     dict_item = dict()
     pos_dict = dict()

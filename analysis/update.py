@@ -4,9 +4,9 @@ import os
 '''
 Run this code if the data sets are updated
 '''
-a = Average()
+a = averages.Average()
 
 a.ave_nwords_per_tweet()
 a.ave_word_length()
 
-os.system("misspellings.py")
+os.system("python misspellings.py")

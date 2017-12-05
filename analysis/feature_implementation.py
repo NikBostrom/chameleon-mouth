@@ -14,33 +14,83 @@ f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
 # bag_data = bag.get(["trump"])
 # print("Bag data:", bag_data)
 
-tweet = "That special hat delivery will take place deep within the real, but fictional (of course), tunnel we are building under LA while you drive the giant machine blindfolded. This will actually happen."
-
 aves = averages.Precalcd_Ave()
-
-word_list = tweet.split(" ")
-
 bag = bagofwords.BagOfWords()
-f_bag = bag.get(word_list)
-f_misspelled = misspelled_distributions(tweet)
-f_length = aves.probs(tweet)
+
+test_set = pd.read_csv("../data/test_set.csv")
 
 weights = [0.333,0.333,0.333]
-features = [f_bag, f_misspelled, f_length]
 
-f_w = zip(features, weights)
+predictions = []
 
-people = f_bag.keys()
+for index, row in test_set.iterrows():
+    tweet = row["text"]
 
-final = dict()
+    word_list = tweet.split(" ")
 
-for feature, weight in f_w:
-    for person in people:
-        if person not in final.keys():
-            final[person] = feature[person] * weight
-        else:
-            final[person] += feature[person] * weight
+    f_bag = bag.get(word_list)
+    f_misspelled = misspelled_distributions(tweet)
+    f_length = aves.probs(tweet)
 
-print(final)
+
+    features = [f_bag, f_misspelled, f_length]
+
+    f_w = zip(features, weights)
+
+    people = f_bag.keys()
+
+    final = dict()
+
+    for feature, weight in f_w:
+        for person in people:
+            if person not in final.keys():
+                final[person] = feature[person] * weight
+            else:
+                final[person] += feature[person] * weight
+    
+    p = max(final, key=final.get)
+    predictions.append(p)
+    print("prediction: " + p + " actual: " + row["person"])
+    
+test_set["prediction"] = predictions
+test_set["correct"] = test_set["prediction"] == test_set["person"]
+
+correct = test_set[test_set["correct"] == True]
+num_correct = len(correct)
+num_total = len(test_set)
+test_set.to_csv("predictions.csv", index=False)
+print("Percent Correct" + (num_correct/num_total))
+
+
+#def prediction(row):
+#
+#    tweet = row["text"]
+#
+#    word_list = tweet.split(" ")
+#
+#    f_bag = bag.get(word_list)
+#    f_misspelled = misspelled_distributions(tweet)
+#    f_length = aves.probs(tweet)
+#
+#
+#    features = [f_bag, f_misspelled, f_length]
+#
+#    f_w = zip(features, weights)
+#
+#    people = f_bag.keys()
+#
+#    final = dict()
+#
+#    for feature, weight in f_w:
+#        for person in people:
+#            if person not in final.keys():
+#                final[person] = feature[person] * weight
+#            else:
+#                final[person] += feature[person] * weight
+#
+#    return max(final, key=final.get)
+
+#test_set["prediction"] = data.apply(lambda row: prediction(row), axis = 1)
+
 
 

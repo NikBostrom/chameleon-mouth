@@ -45,7 +45,7 @@ files = os.listdir(filepath)
 files = [file for file in files if file.split(".")[1] == "csv"]
 people = list(map(lambda x: x.split("_")[0], files))
 
-all_tweets = pd.read_csv("all_tweets.csv")
+all_tweets = pd.read_csv("../data/training_set.csv")
 
 all_tweets["misspelled"] = all_tweets.apply(lambda row: misspelled_sentence(row), axis=1)
 all_tweets["num_words"] = all_tweets.apply(lambda row: num_words(row), axis=1)

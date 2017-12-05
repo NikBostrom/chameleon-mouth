@@ -47,6 +47,8 @@ class Average:
         self.raw_tweet_filepath = "../data/raw_tweets/"
         self.raw_tweet_files = os.listdir(self.raw_tweet_filepath)
 
+        self.training_set_filepath = "../data/training_set.csv"
+
         self.people = list(map(lambda x: x.split("_")[0], self.dict_files))
 
         self.ave_word_lengths = {}
@@ -99,9 +101,14 @@ class Average:
         Calculate average number of words per tweet and average length of word PER TWEET
         ----------------------------------------------
         '''
-        for person, file in zip(self.people, self.raw_tweet_files):
+
+        training_set = pd.read_csv(self.training_set_filepath)
+
+        people = list(set(training_set["person"]))
+
+        for person in people:
             
-            data = pd.read_csv(self.raw_tweet_filepath + file, error_bad_lines=False, encoding='latin1')
+            data = training_set[training_set["person"] == person]
             total_words = 0
             num_tweets = 0
             ave_word_lengths_per_tweet = []
