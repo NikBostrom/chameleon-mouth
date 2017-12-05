@@ -5,3 +5,8 @@ https://www.kaggle.com/adhok93/president-obama/data
 https://www.kaggle.com/kingburrito666/elon-musk-tweets/data
 
 http://trumptwitterarchive.com/
+
+
+Brown, Brendan. “Trump Twitter Archive.” Trump Twitter Archive, 2016, trumptwitterarchive.com/.
+
+Larsen, Liam. “Elon Musk Tweets, 2010 to 2017.” Kaggle, 23 Apr. 2017, www.kaggle.com/kingburrito666/elon-musk-tweets/data.
