@@ -19,3 +19,4 @@ for person, file in zip(people, files):
 tweets = pd.concat(tweets)
 tweets.to_csv("aggregate_tweets/all_tweets.csv", index=False)
 
+features = ["avg_tweet_length", "avg_word_length"]
