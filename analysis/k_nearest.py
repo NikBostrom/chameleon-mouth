@@ -2,38 +2,20 @@
 
 import util
 import numpy as np
+from collections import Counter
 
 class k_Nearest:
     def __init__(self, datafile="all_tweets.csv"):
-    	self.text_to_author = util.get_text_to_author()
+
+    	'''
+		Get all training tweets and their authorship
+    	'''
+    	(self.text_to_author, self.text_to_wordlist, self.text_to_POSlist, 
+    		self.wordfreq, self.POSfreq) = util.gettweets()
     	self.all_tweet_texts = list(self.text_to_author.keys())
     	# self.tweets_all, self.tweets_POSs_all
     	self.no_of_tweets = len(self.text_to_author.keys())
     	# self.people = self.tweets_all.keys()
-
-    # def occurence_similarity(self, tweet_new, tweets_all_values):
-    	
-    # 	occurrences_all = np.zeros(len(tweets_all_values))
-    # 	for i, tweet_data in enumerate(tweets_all.values()):
-    # 		occurrences = 0
-    # 		for word in tweet_new:
-    # 			occurrences += tweet_data.count(word)
-    # 		occurrences_all[i] = occurrences
-    	
-    # 	# Scale the values so that the maximum value is 1
-    # 	occurrences_all_norm = np.array([x/max(occurrences_all) for x in occurrences_all])
-
-    # 	return occurrences_all_norm
-
-    # def word_similarity(self, tweet_words_new):
-    # 	'''
-    # 	Call this if you want to calculate word occurrence similarity separately. Usually better to just call
-    # 	all_wordbased_similarities since that also calculates this
-    # 	'''
-    # 	return occurence_similarity(tweet_words_new, self.tweets_all.values())
-
-    # def POS_similarity(self, tweet_POSs_new):
-    # 	return occurence_similarity(tweet_POSs_new, self.tweets_POSs_all.values())
 
     def all_similarities(self, tweet_new):
 
@@ -53,19 +35,25 @@ class k_Nearest:
     	# Iterate over each tweet in the dataset (i.e. tweet_data)
     	for i, tweet_data_raw in enumerate(self.all_tweet_texts):
     		
-    		if (i % 1000) == 0:
-    			print(i)
+    		# if (i % 1000) == 0:
+    		# 	print(i)
 
-    		tweet_data = util.tweet_str_to_wordlist(tweet_data_raw)
-    		tweet_data_POS = util.tweet_str_to_POSlist(tweet_data_raw)
-
+    		tweet_data = self.text_to_wordlist[tweet_data_raw]
+    		tweet_data_POS = self.text_to_POSlist[tweet_data_raw]
+    		# if i == 10000:
+    		# 	print(tweet_new)
+    		# 	print(tweet_words_new)
+    		# 	print(tweet_POSs_new)
+    		# 	print(tweet_data_raw)
+    		# 	print(tweet_data)
+    		# 	print(tweet_data_POS)
     		# Calculate the number of times words in tweet_words_new occur in tweet_data
-    		occurrences = sum([tweet_data.count(word) for word in tweet_words_new])
-    		wordoccurrence_similarities[i] = occurrences
+    		occurrences = sum([min(np.exp(-np.log(0.2*self.wordfreq[word])),1) for word in tweet_words_new if word in tweet_data])
+    		wordoccurrence_similarities[i] = occurrences/(len(tweet_data)+len(tweet_words_new))
 
     		# Calcualte the number of times the same POS in tweet_POSs_new occurs in tweet_data
-    		occurrences = sum([tweet_data_POS.count(word) for word in tweet_POSs_new])
-    		POSoccurrence_similarities[i] = occurrences
+    		occurrences = sum([min(np.exp(-np.log(0.2*self.POSfreq[word])),1) for word in tweet_POSs_new if word in tweet_data_POS])
+    		POSoccurrence_similarities[i] = occurrences/(len(tweet_data_POS) + len(tweet_POSs_new))
 
     		# Calculate how similar their tweet lengths are
     		# A negative exponential is used to map absolute separation, where 0 is most similar, to a similarity score, 
@@ -79,21 +67,19 @@ class k_Nearest:
     		avglenofword_similarities[i] = np.exp(-abs(avglenofword_separation))
 
     		# Calculate how similar their number of hashtags are
-    		numhashtags_separation = (sum([1 if word[0] == "#" else 0 for word in tweet_words_new])
-    								- sum([1 if word[0] == "#" else 0 for word in tweet_data]))
+    		numhashtags_separation = (sum([1 for word in tweet_words_new if word[0] == "#"])
+    								- sum([1 for word in tweet_data if word[0] == "#"]))
     		numhashtags_similarities[i] = np.exp(-abs(numhashtags_separation))
 
     		# Calculate how similar their number of links are
-    		numlinks_separation = (sum([1 if "http" in word else 0 for word in tweet_words_new])
-    							 - sum([1 if "http" in word else 0 for word in tweet_data]))
+    		numlinks_separation = (sum([1 for word in tweet_words_new if "http" in word])
+    							 - sum([1 for word in tweet_data if "http" in word]))
     		numlinks_similarities[i] = np.exp(-abs(numlinks_separation))
 
     		# Calculate how similar their number of mentions are
-    		nummentions_separation = (sum([1 if word[0] == "@" else 0 for word in tweet_words_new])
-    								- sum([1 if word[0] == "@" else 0 for word in tweet_data]))
+    		nummentions_separation = (sum([1 for word in tweet_words_new if word[0] == "@"])
+    								- sum([1 for word in tweet_data if word[0] == "@"]))
     		nummentions_similarities[i] = np.exp(-abs(nummentions_separation))
-
-    	print(max(wordoccurrence_similarities))
 
     	wordoccurrence_similarities_norm = wordoccurrence_similarities/max(wordoccurrence_similarities)
     	POSoccurrence_similarities_norm = POSoccurrence_similarities/max(POSoccurrence_similarities)
@@ -106,10 +92,10 @@ class k_Nearest:
     	
     	similarity_vectors = self.all_similarities(tweet_new)
 
-    	print(np.shape(similarity_vectors))
-    	print(max(similarity_vectors[0]))
+    	# print(np.shape(similarity_vectors))
+    	# print(max(similarity_vectors[0]))
     	
-    	weights = np.array([0.375, 0.375, 0.05, 0.05, 0.05, 0.05, 0.05])
+    	weights = np.array([0.5, 0.4, 0.1, 0.0, 0.0, 0.0, 0.0])
     	
     	overall_similarities = np.zeros(self.no_of_tweets)
 
@@ -121,14 +107,55 @@ class k_Nearest:
     	for i in ind:
     		print(overall_similarities[i])
     		print(similarity_vectors[0][i])
-    	print(overall_similarities[ind[0] + 1])
+    		print(similarity_vectors[1][i])
+    		print(similarity_vectors[2][i])
+    		print(similarity_vectors[3][i])
+    		print(similarity_vectors[4][i])
+    		print(similarity_vectors[5][i])
+    		print(similarity_vectors[6][i])
+    		print(" ")
+
+    	tweets = [self.all_tweet_texts[i] for i in ind]
+    	print(tweets)
+    	print([self.text_to_author[text] for text in tweets])
+
+    	ind = sorted(ind, key= lambda x: overall_similarities[x], reverse=True)
     	tweets = [self.all_tweet_texts[i] for i in ind]
     	authors = [self.text_to_author[text] for text in tweets]
 
-    	return tweets, authors
+    	authors_count = Counter(authors)
+    	print(authors_count)
+    	most_frequent_author = authors_count.most_common(1)[0][0]
+    	print("Most frequent author: ", most_frequent_author)
+
+    	most_frequent_authors = []
+    	for author, count in authors_count.items():
+    		if authors_count[most_frequent_author] == authors_count[author]:
+    			most_frequent_authors.append(author)
+    	print("Most frequent authors: ", most_frequent_authors)
+
+    	if len(most_frequent_authors) == 1:
+    		print("no tie")
+    		return authors, most_frequent_authors[0]
+    	else:
+    		print("tie!")
+    		for author in authors:
+    			if author in most_frequent_authors:
+    				return authors, author
+
 
 a = k_Nearest()
 tweet = "Senate leaders' political games are handicapping the Supreme Court and judgeships across the country. http://ofa.bo/2dVVHno? #DoYourJob"
-b = a.get_k_nearest(tweet, k=5)
+tweet1 = "With the great vote on Cutting Taxes, this could be a big day for the Stock Market - and YOU!"
+tweet2 = "Putting Pelosi/Schumer Liberal Puppet Jones into office in Alabama would hurt our great Republican Agenda of low on taxes"
+tweet3 = "Crest Velour Hoodie and Sweatpants http://thekidssupply.com "
+b = a.get_k_nearest(tweet, k=12)
+c = a.get_k_nearest(tweet1, k=12)
+d = a.get_k_nearest(tweet2, k=12)
+e = a.get_k_nearest(tweet3, k=12)
+
 # 
 print(b)
+print(c)
+print(d)
+print(e)
