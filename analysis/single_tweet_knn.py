@@ -6,8 +6,8 @@ knn = k_nearest.k_Nearest()
 
 k = 10
 
-tweet = "hello"
+user_input = input("Please Enter Your Tweet: ")
 
-prediction = knn.get_author_prediction(tweet, k)
+prediction = knn.get_author_prediction(user_input, k)
 
-print(prediction)
+print("Prediction: " + prediction)
