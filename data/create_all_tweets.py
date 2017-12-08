@@ -26,4 +26,4 @@ for file in files:
 	data_files.append(data)
 
 all_tweets = pd.concat(data_files)
-all_tweets.to_csv("test.csv", index=False)
+all_tweets.to_csv("all_tweets.csv", index=False)

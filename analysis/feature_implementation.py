@@ -10,35 +10,23 @@ import averages
 
 from misspellings_functions import misspelled_distributions
 
-f_1 = {"obama": 0.1, "trump": 0.3, "neil": 0.5, "kim": 0.05, "elon": 0.05}
-f_2 = {"obama": 0.3, "trump": 0.1, "neil": 0.2, "kim": 0.3, "elon": 0.1}
-
-# bag = bagofwords.BagOfWords()
-# bag_data = bag.get(["trump"])
-# print("Bag data:", bag_data)
-
 start = time.time()
 
 aves = averages.Precalcd_Ave()
 bag = bagofwords.BagOfWords()
 pos = bagofwords.BagOfWords(dataset=1)
 
-#test_set = pd.read_csv("test_set_sample.csv")
-##test_set = pd.read_csv("../data/test_set.csv")
-##test_set = test_set.sample(500)
-##test_set = test_set.reset_index()
 
 test_set = pd.read_csv("test_set_sample.csv")
 
-# weights = [0.7488068419804749, 0.25119315801952524, 0.0, 0.0]
-# weights = [0.25, 0.25, 0.25, 0.25]
-weights = [0.5,0.5,0.0,0.0]
+weights = [0.7488068419804749, 0.25119315801952524, 0.0, 0.0]
+#weights = [0.25, 0.25, 0.25, 0.25]
+
+#weights = [0.5,0.5,0.0,0.0]
+weights = [1.0, 0, 0, 0]
 
 def analyze(tweet):
     try:
-#        aves = averages.Precalcd_Ave()
-#        bag = bagofwords.BagOfWords()
-#        pos = bagofwords.BagOfWords(dataset=1)
         
         word_list = tweet.split(" ")
         
@@ -71,14 +59,6 @@ def analyze(tweet):
         p = "error"
     return p
 
-start = time.time()
-
-#p = Pool(8)
-#tweets = list(test_set["text"])
-#predictions = p.map(analyze, tweets)
-#
-#p.close()
-
 tweets = list(test_set["text"])
 predictions = [analyze(tweet) for tweet in tweets]
 
@@ -94,7 +74,6 @@ print("Percent Correct" + str(num_correct/num_total))
 
 people = list(set(test_set["person"]))
 
-# FIX THIS
 for person in people:
     temp = test_set[test_set["person"] == person]
     num = len(temp)
@@ -106,4 +85,6 @@ for person in people:
     print("Percentage Correct: " + str(c / num))
     print()
     
+print(weights)
+
 print(str(time.time() - start))
