@@ -9,7 +9,7 @@ from misspellings_functions import misspelled_distributions
 aves = averages.Precalcd_Ave()
 bag = bagofwords.BagOfWords()
 pos = bagofwords.BagOfWords(dataset=1)
-weights = [0,1.0,0,0]
+weights = [0.75,0.25,0,0]
 
 def analyze(tweet):
     try:
