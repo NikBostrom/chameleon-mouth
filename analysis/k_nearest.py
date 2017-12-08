@@ -83,7 +83,8 @@ class k_Nearest:
     	similarity_vectors = self.all_similarities(tweet_new)
     	
     	# The weightings of each feature
-    	weights = np.array([0.5, 0.25, 0.05, 0.05, 0.05, 0.05, 0.05])
+    	# Here are the optimal weightings
+    	weights = np.array([0.594, 0.315, 0.007, 0.064, 0.007, 0.007, 0.006])
     	
     	# Perform linear combination of feature vectors
     	overall_similarities = np.zeros(self.no_of_tweets)
@@ -102,6 +103,10 @@ class k_Nearest:
 
     	return tweets, authors
 
+    '''
+    Returns the single most likely author of a given tweet.
+    k is the number of neighbors to select each iteration
+    '''
     def get_author_prediction(self, tweet, k):
     	_, authors = self.get_k_nearest(tweet, k)
 

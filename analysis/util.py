@@ -1,3 +1,5 @@
+# utility functions
+
 import pandas as pd
 import numpy as np
 import nltk
@@ -97,6 +99,7 @@ def gettweets(datafile="all_tweets.csv"):
 
     return text_to_author, text_to_wordlist, text_to_POSlist, wordfreq, POSfreq
 
+# For k-NN
 def getknntrainingtweets(datafile="knn_training_set.csv"):
     data = pd.read_csv(datafile)
     

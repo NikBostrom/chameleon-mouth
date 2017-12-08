@@ -1,5 +1,7 @@
 # Python 3
 
+# Implements the BagOfWords feature for Naive Bayes
+
 import numpy as np
 import pandas as pd
 import glob
@@ -133,7 +135,3 @@ class BagOfWords:
             probsums_norm[name] = probsum/sum(probsums)
 
         return probsums_norm
-
-# a = BagOfWords()
-# b = a.get(['trump'])
-# print(b)

@@ -1,10 +1,14 @@
+# Tests 500 sample tweets on the k-NN algorithm
+# For each author, prints out the number of tweets predicted correctly
+# Also prints out overall percentage correct
+
 import pandas as pd
 from k_nearest import k_Nearest
 
 test_set = pd.read_csv("test_set_sample.csv")
 
 knn = k_Nearest()
-k = 10
+k = 10 # Select 10 nearest neighbors per tweet
 
 tweets = list(test_set["text"])
 predictions = [knn.get_author_prediction(tweet, k) for tweet in tweets]
