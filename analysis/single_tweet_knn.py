@@ -1,8 +1,9 @@
 # Python 3
+print()
+print("Loading...")
 
 import k_nearest
 
-print("Loading...")
 print()
 knn = k_nearest.k_Nearest()
 
