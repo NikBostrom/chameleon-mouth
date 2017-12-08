@@ -42,21 +42,7 @@ for index, row in validation_set.iterrows():
     
         features = [f_bag, f_pos, f_misspelled, f_length]
     
-#        f_w = zip(features, weights)
-#    
-#        people = f_bag.keys()
-#    
-#        final = dict()
-    
-#        for feature, weight in f_w:
-#            for person in people:
-#                if person not in final.keys():
-#                    final[person] = feature[person] * weight
-#                else:
-#                    final[person] += feature[person] * weight
-        #p = max(final, key=final.get)
         feature_results = list(map(lambda x: max(x, key=x.get), features))
-        #print(feature_results)
     except:
         feature_results =[]
     if len(list(feature_results)) > 0:
@@ -70,12 +56,17 @@ for index, row in validation_set.iterrows():
         weights = list(map(add, weights, results))
         weights = [0 if i < 0 else i for i in weights]
         weights = [float(i)/sum(weights) for i in weights]
-        #print(results)
     beta = beta * alpha
     if index%50 == 0:
         print(index)
 print(weights)
 print(str(time.time() - start))
+
+data = pd.Dataframe(weights, columns = ["weights"])
+data.to_csv("optimal_weights.csv", index=False)
+
+
+
 
 
 
