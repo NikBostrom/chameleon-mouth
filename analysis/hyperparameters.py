@@ -21,11 +21,15 @@ pos = bagofwords.BagOfWords(dataset=1)
 
 weights = [0.25,0.25,0.25,0.25]
 
+#discounts by alpha at each step
 alpha = 0.98
+
+#begins at 1.0 and decreases at each step
 beta = 1.0
 
 start = time.time()
 
+#loops through each tweet and updates the weights at each step
 for index, row in validation_set.iterrows():
     try:
         tweet = row["text"]
