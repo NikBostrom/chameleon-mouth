@@ -3,6 +3,7 @@
 import util
 import numpy as np
 from collections import Counter
+import pandas as pd
 
 class k_Nearest:
     def __init__(self):
@@ -100,7 +101,7 @@ class k_Nearest:
     	# print(max(similarity_vectors[0]))
     	
     	# The weightings of each feature
-    	weights = np.array([0.5, 0.4, 0.1, 0.0, 0.0, 0.0, 0.0])
+    	weights = np.array([0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     	
     	# Perform linear combination of feature vectors
     	overall_similarities = np.zeros(self.no_of_tweets)
@@ -133,11 +134,16 @@ class k_Nearest:
     	tweets = [self.all_tweet_texts[i] for i in ind]
     	authors = [self.text_to_author[text] for text in tweets]
 
+    	return tweets, authors
+
+    def get_author_prediction(self, tweet, k):
+    	_, authors = self.get_k_nearest(tweet, k)
+
     	# Count the authorship and return most common author
     	authors_count = Counter(authors)
-    	print(authors_count)
+    	# print(authors_count)
     	most_frequent_author = authors_count.most_common(1)[0][0]
-    	print("Most frequent author: ", most_frequent_author)
+    	# print("Most frequent author: ", most_frequent_author)
 
     	# Because there might be ties, we iterate through the counter and
     	# identify any other authors which might also have the maximal
@@ -146,32 +152,62 @@ class k_Nearest:
     	for author, count in authors_count.items():
     		if authors_count[most_frequent_author] == authors_count[author]:
     			most_frequent_authors.append(author)
-    	print("Most frequent authors: ", most_frequent_authors)
+    	# print("Most frequent authors: ", most_frequent_authors)
 
     	# If no tie, simply return the original most common author
     	if len(most_frequent_authors) == 1:
-    		return authors, most_frequent_authors[0]
+    		return most_frequent_authors[0]
 
     	# Else if there is a tie, loop through tweets and pick the most similar
     	# tweet that also has most common authorship. Return that author
     	else:
     		for author in authors:
     			if author in most_frequent_authors:
-    				return authors, author
+    				return author
 
 
-a = k_Nearest()
-tweet = "Senate leaders' political games are handicapping the Supreme Court and judgeships across the country. http://ofa.bo/2dVVHno? #DoYourJob"
-tweet1 = "With the great vote on Cutting Taxes, this could be a big day for the Stock Market - and YOU!"
-tweet2 = "Putting Pelosi/Schumer Liberal Puppet Jones into office in Alabama would hurt our great Republican Agenda of low on taxes"
-tweet3 = "Crest Velour Hoodie and Sweatpants http://thekidssupply.com "
-b = a.get_k_nearest(tweet, k=12)
-c = a.get_k_nearest(tweet1, k=12)
-d = a.get_k_nearest(tweet2, k=12)
-e = a.get_k_nearest(tweet3, k=12)
+# a = k_Nearest()
+# tweet = "Senate leaders' political games are handicapping the Supreme Court and judgeships across the country. http://ofa.bo/2dVVHno? #DoYourJob"
+# tweet1 = "With the great vote on Cutting Taxes, this could be a big day for the Stock Market - and YOU!"
+# tweet2 = "Putting Pelosi/Schumer Liberal Puppet Jones into office in Alabama would hurt our great Republican Agenda of low on taxes"
+# tweet3 = "Crest Velour Hoodie and Sweatpants http://thekidssupply.com "
+# b = a.get_k_nearest(tweet, k=12)
+# c = a.get_k_nearest(tweet1, k=12)
+# d = a.get_k_nearest(tweet2, k=12)
+# e = a.get_k_nearest(tweet3, k=12)
 
-# 
-print(b)
-print(c)
-print(d)
-print(e)
+# # 
+# print(b)
+# print(c)
+# print(d)
+# print(e)
+
+test_set = pd.read_csv("test_set_sample.csv")
+
+knn = k_Nearest()
+k = 10
+
+tweets = list(test_set["text"])
+predictions = [knn.get_author_prediction(tweet, k) for tweet in tweets]
+
+test_set["prediction"] = predictions
+test_set["correct"] = test_set["prediction"] == test_set["person"]
+
+correct = test_set[test_set["correct"] == True]
+num_correct = len(correct)
+test_set.to_csv("knn_predictions.csv", index=False)
+num_total = len(test_set)
+print("Percent Correct" + str(num_correct/num_total))
+
+people = list(set(test_set["person"]))
+
+for person in people:
+    temp = test_set[test_set["person"] == person]
+    num = len(temp)
+    correct = temp[temp["correct"] == True]
+    c = len(correct)
+    print("Person: " + person)
+    print("Tweets: " + str(num))
+    print("Number Correct: " + str(c))
+    print("Percentage Correct: " + str(c / num))
+    print()
