@@ -30,8 +30,9 @@ pos = bagofwords.BagOfWords(dataset=1)
 
 test_set = pd.read_csv("test_set_sample.csv")
 
-#weights = [0.7488068419804749, 0.25119315801952524, 0.0, 0.0]
-weights = [0.25, 0.25, 0.25, 0.25]
+# weights = [0.7488068419804749, 0.25119315801952524, 0.0, 0.0]
+# weights = [0.25, 0.25, 0.25, 0.25]
+weights = [0.5,0.5,0.0,0.0]
 
 def analyze(tweet):
     try:
