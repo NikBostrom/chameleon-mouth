@@ -21,7 +21,7 @@ pos = bagofwords.BagOfWords(dataset=1)
 
 weights = [0.25,0.25,0.25,0.25]
 
-alpha = 0.99
+alpha = 0.98
 beta = 1.0
 
 start = time.time()

@@ -4,6 +4,7 @@ print("Loading...")
 print()
 
 import bagofwords
+import pandas as pd
 import nltk
 import time
 import averages
@@ -12,7 +13,7 @@ from misspellings_functions import misspelled_distributions
 aves = averages.Precalcd_Ave()
 bag = bagofwords.BagOfWords()
 pos = bagofwords.BagOfWords(dataset=1)
-weights = [0.75,0.25,0,0]
+weights = list(pd.read_csv("optimal_weights.csv")["weights"])
 
 def analyze(tweet):
     try:
@@ -35,7 +36,6 @@ def analyze(tweet):
         people = f_bag.keys()
     
         final = dict()
-        print(features)
         for feature, weight in f_w:
             for person in people:
                 if person not in final.keys():
@@ -57,8 +57,6 @@ while(True):
 
     print("Prediction: " + prediction + "\n")
     print("Distribution: ")
-    print(distribution)
-    print(weights)
     for key in distribution.keys():
         print(key + ": " + "{0:.0f}%".format(distribution[key] * 100))
     print()

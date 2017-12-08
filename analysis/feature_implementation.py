@@ -60,7 +60,6 @@ def analyze(tweet):
 tweets = list(test_set["text"])
 predictions = [analyze(tweet) for tweet in tweets]
 
-
 test_set["prediction"] = predictions
 test_set["correct"] = test_set["prediction"] == test_set["person"]
 
@@ -82,7 +81,5 @@ for person in people:
     print("Number Correct: " + str(c))
     print("Percentage Correct: " + str(c / num))
     print()
-    
-print(weights)
 
 print(str(time.time() - start))
