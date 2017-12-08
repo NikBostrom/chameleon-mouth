@@ -1,4 +1,7 @@
 # Python 3
+print()
+print("Loading...")
+print()
 
 import bagofwords
 import nltk
@@ -32,7 +35,7 @@ def analyze(tweet):
         people = f_bag.keys()
     
         final = dict()
-    
+        print(features)
         for feature, weight in f_w:
             for person in people:
                 if person not in final.keys():
@@ -45,11 +48,17 @@ def analyze(tweet):
         p = ("error", {})
     return (p, final)
 
-user_input = input("Please Enter Your Tweet: ")
+while(True):
+    user_input = input("Please Enter Your Tweet (Control-C to Quit): ")
+    print()
+    output = analyze(user_input)
+    prediction = output[0]
+    distribution = output[1]
 
-output = analyze(user_input)
-prediction = output[0]
-distribution = output[1]
-
-print("Prediction: " + prediction)
-print("Distribution: " + str(distribution))
+    print("Prediction: " + prediction + "\n")
+    print("Distribution: ")
+    print(distribution)
+    print(weights)
+    for key in distribution.keys():
+        print(key + ": " + "{0:.0f}%".format(distribution[key] * 100))
+    print()

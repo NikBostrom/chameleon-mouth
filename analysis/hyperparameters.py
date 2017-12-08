@@ -62,7 +62,7 @@ for index, row in validation_set.iterrows():
 print(weights)
 print(str(time.time() - start))
 
-data = pd.Dataframe(weights, columns = ["weights"])
+data = pd.DataFrame(weights, columns = ["weights"])
 data.to_csv("optimal_weights.csv", index=False)
 
 
