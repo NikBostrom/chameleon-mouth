@@ -2,6 +2,7 @@
 
 import k_nearest
 
+print("Loading...")
 print()
 knn = k_nearest.k_Nearest()
 
