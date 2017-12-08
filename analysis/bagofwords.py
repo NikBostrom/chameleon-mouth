@@ -50,7 +50,6 @@ class BagOfWords:
         self.wordprob_all = []
         self.totalfreq_all = []
 
-    def populate(self):
         '''
         Fill ALL the storage! (Now it knows things.)
         '''
@@ -106,7 +105,7 @@ class BagOfWords:
         
         return logprob_list
 
-    def parsetweet(self, tweet):
+    def get(self, tweet):
         '''
         Find the normalized probability that a tweet was written by each of the people
         '''
@@ -134,10 +133,6 @@ class BagOfWords:
             probsums_norm[name] = probsum/sum(probsums)
 
         return probsums_norm
-
-    def get(self, tweet):
-        self.populate()
-        return self.parsetweet(tweet)
 
 # a = BagOfWords()
 # b = a.get(['trump'])

@@ -77,13 +77,13 @@ class k_Nearest:
     		lenoftweet_similarities, avglenofword_similarities, 
     		numhashtags_similarities, numlinks_similarities, nummentions_similarities)
 
-    def get_k_nearest(self, tweet_new, k=5):
+    def get_k_nearest(self, tweet_new, k=10):
     	
     	# Get the similarity vectors for each feature of interest
     	similarity_vectors = self.all_similarities(tweet_new)
     	
     	# The weightings of each feature
-    	weights = np.array([0.75, 0.25, 0.0, 0.0, 0.0, 0.0, 0.0])
+    	weights = np.array([0.5, 0.25, 0.05, 0.05, 0.05, 0.05, 0.05])
     	
     	# Perform linear combination of feature vectors
     	overall_similarities = np.zeros(self.no_of_tweets)

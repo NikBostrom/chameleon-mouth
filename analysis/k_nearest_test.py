@@ -1,4 +1,5 @@
 import pandas as pd
+from k_nearest import k_Nearest
 
 test_set = pd.read_csv("test_set_sample.csv")
 
