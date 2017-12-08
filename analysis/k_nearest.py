@@ -5,13 +5,13 @@ import numpy as np
 from collections import Counter
 
 class k_Nearest:
-    def __init__(self, datafile="all_tweets.csv"):
+    def __init__(self):
 
     	'''
 		Get all training tweets and their authorship
     	'''
     	(self.text_to_author, self.text_to_wordlist, self.text_to_POSlist, 
-    		self.wordfreq, self.POSfreq) = util.gettweets()
+    		self.wordfreq, self.POSfreq) = util.getknntrainingtweets()
     	self.all_tweet_texts = list(self.text_to_author.keys())
     	# self.tweets_all, self.tweets_POSs_all
     	self.no_of_tweets = len(self.text_to_author.keys())
