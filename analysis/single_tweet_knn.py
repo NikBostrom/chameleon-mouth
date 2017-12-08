@@ -2,6 +2,7 @@
 
 import k_nearest
 
+print()
 knn = k_nearest.k_Nearest()
 
 k = 10
